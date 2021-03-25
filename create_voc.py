@@ -3,6 +3,7 @@ from os import listdir
 from collections import Counter
 from nltk.corpus import stopwords
 from create_embedding_word2vec import load_doc
+from os import path
 
 # turn a doc into clean tokens
 def voc_clean_doc(doc):
@@ -47,6 +48,9 @@ def voc_process_docs(directory, vocab, is_trian):
 def create_voc():
 	vocab = Counter()
 	# add all docs to vocab
+	if path.exists('txt_sentoken/neg') is False:
+		print('Please make sure the files of training set and test set are exist!')
+		exit(-1)
 	voc_process_docs('txt_sentoken/neg', vocab, True)
 	voc_process_docs('txt_sentoken/pos', vocab, True)
 	# print the size of the vocab

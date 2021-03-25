@@ -9,6 +9,7 @@ from keras.layers import Embedding
 from keras.layers.convolutional import Conv1D
 from keras.layers.convolutional import MaxPooling1D
 from doc_base import load_doc, process_docs, get_weight_matrix, glove_load_embedding
+from os import path
 
 # load embedding as a dict
 def word2vec_load_embedding(filename):
@@ -32,6 +33,9 @@ def word2vec_predict(if_layer, if_glove):
     vocab = set(vocab)
 
     # load all training reviews
+    if path.exists('txt_sentoken/neg') is False:
+        print('Please make sure the files of training set and test set are exist!')
+        exit(-1)
     positive_docs = process_docs('txt_sentoken/pos', vocab, True)
     negative_docs = process_docs('txt_sentoken/neg', vocab, True)
     train_docs = negative_docs + positive_docs
@@ -67,6 +71,9 @@ def word2vec_predict(if_layer, if_glove):
     if if_layer is False:
         # load embedding from file
         if if_glove is True:
+            if path.exists('glove.6B/glove.6B.100d.txt') is False:
+                print('Please make sure the files of pre-trained GloVe vectors are exist!')
+                exit(-1)
             raw_embedding = glove_load_embedding('glove.6B/glove.6B.100d.txt')
         else:
             raw_embedding = word2vec_load_embedding('embedding_word2vec.txt')
